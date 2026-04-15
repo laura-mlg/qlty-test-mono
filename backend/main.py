@@ -1,5 +1,3 @@
-from typing import Optional
-
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
@@ -10,7 +8,7 @@ class User(BaseModel):
     id: int
     name: str
     email: str
-    role: Optional[str] = None
+    role: str | None = None
 
 
 users_db: dict[int, User] = {
