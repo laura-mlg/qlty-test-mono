@@ -1,0 +1,93 @@
+# This configuration was generated with the setup-qlty-toml skill.
+# For reference: https://docs.qlty.sh/qlty-toml
+config_version = "0"
+
+exclude_patterns = [
+  "**/node_modules/**",
+  "**/dist/**",
+  "**/build/**",
+  "**/*.min.*",
+  "**/*.d.ts",
+  "**/.terraform/**",
+  "**/.terraform.lock.hcl",
+]
+
+test_patterns = [
+  "**/test/**",
+  "**/tests/**",
+  "**/*.test.*",
+  "**/*.spec.*",
+]
+
+[smells]
+mode = "comment"
+
+# Required — points to the built-in Qlty plugin registry.
+[[source]]
+name = "default"
+default = true
+
+# ── Language linters ──────────────────────────────────────────────────────────
+
+[[plugin]]
+name = "eslint"
+mode = "comment"
+prefix = "frontend"
+config_files = ["frontend/.eslintrc.js"]
+package_file = "frontend/package.json"
+package_filters = ["eslint"]
+affects_cache = ["frontend/tsconfig.json"]
+
+[[plugin]]
+name = "tsc"
+mode = "comment"
+prefix = "frontend"
+config_files = ["frontend/tsconfig.json"]
+skip_upstream = true
+
+[[plugin]]
+name = "ruff"
+mode = "comment"
+prefix = "backend"
+
+[[plugin]]
+name = "mypy"
+mode = "comment"
+prefix = "backend"
+
+# ── Infrastructure ────────────────────────────────────────────────────────────
+
+[[plugin]]
+name = "terraform"
+mode = "comment"
+prefix = "infra"
+
+[[plugin]]
+name = "tflint"
+mode = "comment"
+prefix = "infra"
+
+[[plugin]]
+name = "checkov"
+mode = "block"
+prefix = "infra"
+
+# ── Security scanners (global) ────────────────────────────────────────────────
+
+[[plugin]]
+name = "trufflehog"
+mode = "block"
+
+[[plugin]]
+name = "osv-scanner"
+mode = "block"
+
+# ── Cross-language tools (global) ─────────────────────────────────────────────
+
+[[plugin]]
+name = "actionlint"
+mode = "comment"
+
+[[plugin]]
+name = "yamllint"
+mode = "comment"
