@@ -1,0 +1,95 @@
+# This configuration was generated with the setup-qlty-toml skill.
+# Ref: https://docs.qlty.sh/qlty-toml
+config_version = "0"
+
+exclude_patterns = [
+  "**/node_modules/**",
+  "**/dist/**",
+  "**/build/**",
+  "**/*.min.*",
+  "**/*.d.ts",
+  "**/.terraform/**",
+]
+
+test_patterns = [
+  "**/test/**",
+  "**/tests/**",
+  "**/*.test.*",
+  "**/*.spec.*",
+]
+
+[smells]
+mode = "comment"
+
+# Required — points to the built-in Qlty plugin registry.
+[[source]]
+name = "default"
+default = true
+
+# ── Frontend (React + TypeScript) ─────────────────────────────────────────────
+
+# extra_packages is more reliable for monorepo prefix setups — Qlty's package_file
+# resolution with prefix scoping can have path issues. Versions pinned from
+# frontend/package.json devDependencies.
+[[plugin]]
+name = "eslint"
+mode = "comment"
+prefix = "frontend"
+config_files = ["frontend/.eslintrc.js"]
+extra_packages = [
+  "@typescript-eslint/parser@5.62.0",
+  "@typescript-eslint/eslint-plugin@5.62.0",
+  "eslint-plugin-react@7.33.2",
+  "eslint-plugin-react-hooks@4.6.0",
+]
+
+# ── Backend (Python FastAPI) ──────────────────────────────────────────────────
+
+[[plugin]]
+name = "ruff"
+mode = "comment"
+prefix = "backend"
+config_files = ["backend/pyproject.toml"]
+
+[[plugin]]
+name = "mypy"
+mode = "comment"
+prefix = "backend"
+config_files = ["backend/pyproject.toml"]
+
+# ── Infrastructure (Terraform) ────────────────────────────────────────────────
+
+[[plugin]]
+name = "terraform"
+mode = "comment"
+prefix = "infra"
+
+[[plugin]]
+name = "tflint"
+mode = "comment"
+prefix = "infra"
+
+[[plugin]]
+name = "checkov"
+mode = "block"
+prefix = "infra"
+
+# ── Security scanners (global) ────────────────────────────────────────────────
+
+[[plugin]]
+name = "trufflehog"
+mode = "block"
+
+[[plugin]]
+name = "osv-scanner"
+mode = "block"
+
+# ── Cross-language tools (global) ─────────────────────────────────────────────
+
+[[plugin]]
+name = "actionlint"
+mode = "comment"
+
+[[plugin]]
+name = "yamllint"
+mode = "comment"
