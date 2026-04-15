@@ -1,5 +1,5 @@
 # This configuration was generated with the setup-qlty-toml skill.
-# For reference: https://docs.qlty.sh/qlty-toml
+# Ref: https://docs.qlty.sh/qlty-toml
 config_version = "0"
 
 exclude_patterns = [
