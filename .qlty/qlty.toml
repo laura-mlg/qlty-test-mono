@@ -9,7 +9,6 @@ exclude_patterns = [
   "**/*.min.*",
   "**/*.d.ts",
   "**/.terraform/**",
-  "**/.terraform.lock.hcl",
 ]
 
 test_patterns = [
@@ -29,23 +28,20 @@ default = true
 
 # ── Frontend (React + TypeScript) ─────────────────────────────────────────────
 
-# Use package_file without package_filters so all devDependencies are installed
-# (package_filters prefix-matches by name; scoped packages like @typescript-eslint/*
-# won't match a filter of "eslint" and would cause the build to error)
+# extra_packages is more reliable for monorepo prefix setups — Qlty's package_file
+# resolution with prefix scoping can have path issues. Versions pinned from
+# frontend/package.json devDependencies.
 [[plugin]]
 name = "eslint"
 mode = "comment"
 prefix = "frontend"
 config_files = ["frontend/.eslintrc.js"]
-package_file = "frontend/package.json"
-affects_cache = ["frontend/tsconfig.json"]
-
-[[plugin]]
-name = "tsc"
-mode = "comment"
-prefix = "frontend"
-config_files = ["frontend/tsconfig.json"]
-skip_upstream = true
+extra_packages = [
+  "@typescript-eslint/parser@5.62.0",
+  "@typescript-eslint/eslint-plugin@5.62.0",
+  "eslint-plugin-react@7.33.2",
+  "eslint-plugin-react-hooks@4.6.0",
+]
 
 # ── Backend (Python FastAPI) ──────────────────────────────────────────────────
 
