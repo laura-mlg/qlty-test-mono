@@ -27,15 +27,17 @@ mode = "comment"
 name = "default"
 default = true
 
-# ── Language linters ──────────────────────────────────────────────────────────
+# ── Frontend (React + TypeScript) ─────────────────────────────────────────────
 
+# Use package_file without package_filters so all devDependencies are installed
+# (package_filters prefix-matches by name; scoped packages like @typescript-eslint/*
+# won't match a filter of "eslint" and would cause the build to error)
 [[plugin]]
 name = "eslint"
 mode = "comment"
 prefix = "frontend"
 config_files = ["frontend/.eslintrc.js"]
 package_file = "frontend/package.json"
-package_filters = ["eslint"]
 affects_cache = ["frontend/tsconfig.json"]
 
 [[plugin]]
@@ -45,17 +47,21 @@ prefix = "frontend"
 config_files = ["frontend/tsconfig.json"]
 skip_upstream = true
 
+# ── Backend (Python FastAPI) ──────────────────────────────────────────────────
+
 [[plugin]]
 name = "ruff"
 mode = "comment"
 prefix = "backend"
+config_files = ["backend/pyproject.toml"]
 
 [[plugin]]
 name = "mypy"
 mode = "comment"
 prefix = "backend"
+config_files = ["backend/pyproject.toml"]
 
-# ── Infrastructure ────────────────────────────────────────────────────────────
+# ── Infrastructure (Terraform) ────────────────────────────────────────────────
 
 [[plugin]]
 name = "terraform"
